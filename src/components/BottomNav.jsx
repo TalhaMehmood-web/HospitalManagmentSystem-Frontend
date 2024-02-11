@@ -8,7 +8,7 @@ const BottomNav = () => {
       </div>
 
       <button className=" unselectable bg-gradient-to-r font-semibold from-[#b24591] via-[#CA5B95] to-[#E17097] px-2 py-1 border border-transparent rounded-full">
-        Doctors / Add Doctors
+        Home / Doctors / Add Doctors
       </button>
     </div>
   );

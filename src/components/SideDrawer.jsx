@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import SideBarDropDown from "./SideBarDropDown";
+
 const SideDrawer = () => {
   const [clicked, setClicked] = useState(false);
   const [dropdownStates, setDropdownStates] = useState({
@@ -9,10 +9,10 @@ const SideDrawer = () => {
     Patients: false,
     Appointments: false,
     Payment: false,
+    RoomAllotment: false,
   });
   const navigate = useNavigate();
   const location = useLocation();
-  const currentUrl = location.pathname;
   const handleDropDownClick = (dropdown) => {
     setDropdownStates((prevStates) => ({
       ...prevStates,
@@ -20,50 +20,90 @@ const SideDrawer = () => {
     }));
   };
 
+  const routeHandlers = {
+    Doctors: [
+      () => navigate("/admin/add-doctor"),
+      () => navigate("/admin/all-doctors"),
+      () => navigate("/admin/doctor-details"),
+      () => navigate("/admin/edit-doctor"),
+    ],
+    Patients: [
+      () => navigate("/admin/add-patient"),
+      () => navigate("/admin/all-patients"),
+      () => navigate("/admin/patient-details"),
+      () => navigate("/admin/edit-patient"),
+    ],
+    Appointments: [
+      () => navigate("/admin/add-appointment"),
+      () => navigate("/admin/all-appointments"),
+      () => navigate("/admin/appointment-details"),
+      () => navigate("/admin/edit-appointment"),
+    ],
+    Payment: [
+      () => navigate("/admin/add-payment"),
+      () => navigate("/admin/all-payments"),
+      () => navigate("/admin/payment-invoice"),
+    ],
+    RoomAllotment: [
+      () => navigate("/admin/add-room-allotment"),
+      () => navigate("/admin/all-room-allotments"),
+      () => navigate("/admin/edit-room-allotment"),
+    ],
+  };
+  const subRoutesMapping = {
+    Doctors: ["Add Doctor", "All Doctors", "Doctor Details", "Edit Doctor"],
+    Patients: [
+      "Add Patient",
+      "All Patients",
+      "Patient Details",
+      "Edit Patient",
+    ],
+    Appointments: [
+      "Add Appointment",
+      "All Appointments",
+      "Appointment Details",
+      "Edit Appointment",
+    ],
+    Payment: ["Add Payment", "All Payments", "Payment Invoice"],
+    RoomAllotment: ["Add Room Allotment", "All Rooms", "Edit Room Allotment"],
+  };
+
+  const isActive = (route) => location.pathname.startsWith(`/admin${route}`);
   return (
     <div
       className={`w-full ${
-        clicked && "h-[934px] overflow-y-scroll no-scroll"
-      } h-[900px] overflow-y-scroll no-scroll   bg-gradient-to-r from-[#b24591] via-[#CA5B95] to-[#E17097]`}
+        clicked && "h-[900px] overflow-y-scroll no-scroll"
+      } h-[900px] overflow-y-scroll no-scroll bg-gradient-to-r from-[#b24591] via-[#CA5B95] to-[#E17097]`}
     >
-      <p className="text-lg font-semibold text-white px-3 py-2 cursor-pointer">
+      <img
+        className="px-3 py-2"
+        src="https://www.konnectplugins.com/proclinic/Vertical/images/logo.png"
+        alt=""
+      />
+      <p
+        onClick={() => navigate("/admin")}
+        className="text-lg font-semibold text-white px-3 py-2 cursor-pointer"
+      >
         Dashboard
       </p>
-      <SideBarDropDown
-        Route={"Doctors"}
-        handleDropDownClick={() => handleDropDownClick("Doctors")}
-        clicked={dropdownStates.Doctors}
-        subRoute1={"Add Doctor"}
-        subRoute2={"All Doctors"}
-        subRoute3={"Doctors Details"}
-        subRoute4={"Edit Doctor"}
-      />
-      <SideBarDropDown
-        Route={"Patients"}
-        handleDropDownClick={() => handleDropDownClick("Patients")}
-        clicked={dropdownStates.Patients}
-        subRoute1={"Add Patient"}
-        subRoute2={"All Patients"}
-        subRoute3={"Patient Details"}
-        subRoute4={"Edit Patient"}
-      />
-      <SideBarDropDown
-        Route={"Appointments"}
-        handleDropDownClick={() => handleDropDownClick("Appointments")}
-        clicked={dropdownStates.Appointments}
-        subRoute1={"Add Appointment"}
-        subRoute2={"All Appointments"}
-        subRoute3={"Appointment Detail"}
-        subRoute4={"Edit Appointment"}
-      />
-      <SideBarDropDown
-        Route={"Payment"}
-        handleDropDownClick={() => handleDropDownClick("Payment")}
-        clicked={dropdownStates.Payment}
-        subRoute1={"Add Payment"}
-        subRoute2={"All Payments"}
-        subRoute3={"Payment Invoice"}
-      />
+      {Object.entries(routeHandlers).map(([route, handlers]) => {
+        return (
+          <SideBarDropDown
+            key={route}
+            height={`${
+              route === "Payment" || route === "RoomAllotment"
+                ? "h-[200px]"
+                : "h-[252px]"
+            }`}
+            Route={route}
+            handleDropDownClick={() => handleDropDownClick(route)}
+            clicked={dropdownStates[route]}
+            subRoutes={subRoutesMapping[route]}
+            routeHandlers={handlers}
+            active={isActive(route)}
+          />
+        );
+      })}
     </div>
   );
 };
