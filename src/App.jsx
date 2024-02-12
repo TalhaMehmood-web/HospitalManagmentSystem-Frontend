@@ -1,4 +1,6 @@
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 import Layout from "./components/Layout";
 import { Routes, Route } from "react-router-dom";
 import DashBoard from "./pages/DashBoard";
@@ -29,7 +31,7 @@ function App() {
           <Route path="add-doctor" element={<AddDoctor />} />
           <Route path="all-doctors" element={<AllDoctors />} />
           <Route path="doctor-details" element={<DoctorsDetail />} />
-          <Route path="edit-doctor" element={<EditDoctor />} />
+          <Route path="edit-doctor/:doctorId?" element={<EditDoctor />} />
           <Route path="add-patient" element={<AddPatients />} />
           <Route path="all-patients" element={<AllPatients />} />
           <Route path="patient-details" element={<PatientDetails />} />
@@ -46,6 +48,7 @@ function App() {
           <Route path="edit-room-allotment" element={<EditRoomAllotment />} />
         </Route>
       </Routes>
+      <ToastContainer />
     </>
   );
 }
