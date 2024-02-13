@@ -17,7 +17,12 @@ const AllDoctors = () => {
   };
   const { isLoading, data, isError, error } = useQuery(
     "all-doctors",
-    fetchDoctors
+    fetchDoctors,
+    {
+      initialData: () => {
+        return fetchDoctors();
+      },
+    }
   );
   const handleCheckboxChange = (doctorId) => {
     setSelectedDoctor((prevSelected) => {
@@ -155,7 +160,7 @@ const AllDoctors = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.data.map((doctor, index) => (
+            {data?.data?.map((doctor, index) => (
               <tr
                 className={`${
                   index % 2 === 0 ? "bg-slate-200" : "bg-slate-100"
