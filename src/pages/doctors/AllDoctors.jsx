@@ -4,12 +4,24 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DataTable from "../../miscellaneous/DataTable";
 const AllDoctors = () => {
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
+  const doctorColumns = [
+    { label: "Select", field: "" },
+    { label: "Doctor ID", field: "_id" },
+    { label: "Doctor Name", field: "fullname" },
+    { label: "Doctor Picture", field: "picture" },
+    { label: "Experience", field: "experience" },
+    { label: "Phone", field: "phone" },
+    { label: "Specialization", field: "specialization" },
+    { label: "Age", field: "age" },
+  ];
   const fetchDoctors = async () => {
     return await axios.get(
       `http://localhost:5000/api/v1/doctor/all-doctors?limit=${limit}&search=${search}`
@@ -145,63 +157,12 @@ const AllDoctors = () => {
           </div>
         </div>
       </div>
-      <div className="overflow-x-scroll no-scroll">
-        <table className="min-w-full  bg-white border border-slate-100 rounded-md text-slate-800">
-          <thead>
-            <tr>
-              <th className="py-2 px-4 border-b">Select</th>
-              <th className="py-2 px-4 border-b">Doctor ID</th>
-              <th className="py-2 px-4 border-b">Doctor Picture</th>
-              <th className="py-2 px-4 border-b">Doctor Name</th>
-              <th className="py-2 px-4 border-b">Experience</th>
-              <th className="py-2 px-4 border-b ">Phone</th>
-              <th className="py-2 px-4 border-b ">Specialization</th>
-              <th className="py-2 px-4 border-b">Availability</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.data?.map((doctor, index) => (
-              <tr
-                className={`${
-                  index % 2 === 0 ? "bg-slate-200" : "bg-slate-100"
-                } font-semibold `}
-                key={doctor._id}
-              >
-                <td className="py-2 px-4 border-b text-center">
-                  <input
-                    type="checkbox"
-                    className="cursor-pointer"
-                    checked={selectedDoctor === doctor._id}
-                    onChange={() => handleCheckboxChange(doctor._id)}
-                  />
-                </td>
-                <td className="py-2 px-4 border-b text-center">{doctor._id}</td>
-                <td className="py-2 px-4 border-b flex  justify-center">
-                  <img
-                    className="w-[45px] h-[45px] rounded-full object-cover "
-                    src={`${doctor.picture}`}
-                    alt=""
-                  />
-                </td>
-                <td className="py-2 px-4 border-b text-center">
-                  {doctor.fullname}
-                </td>
-
-                <td className="py-2 px-4 border-b text-center">
-                  {doctor.experience}
-                </td>
-                <td className="py-2 px-4 border-b text-center">
-                  {doctor.phone}
-                </td>
-                <td className="py-2 px-4 border-b text-center">
-                  {doctor.specialization}
-                </td>
-                <td className="py-2 px-4 border-b text-center">{doctor.age}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <DataTable
+        data={data}
+        selectedData={selectedDoctor}
+        handleCheckboxChange={handleCheckboxChange}
+        columns={doctorColumns}
+      />
     </div>
   );
 };
