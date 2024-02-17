@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FormInput from "../components/FormInput";
+import { toast } from "react-toastify";
 
-const FormComponent = ({ fields, onSubmit, heading }) => {
+const FormComponent = ({ fields, onSubmit, heading, buttonText }) => {
   const [formData, setFormData] = useState({});
+  const [formCheck, setFormCheck] = useState(false);
+  const [disableButton, setDisableButton] = useState(true);
+
+  useEffect(() => {
+    setDisableButton(isButtonDisabled());
+  }, [formCheck, formData]);
 
   const handleChange = (fieldName, value) => {
     setFormData((prevData) => ({
@@ -11,12 +18,47 @@ const FormComponent = ({ fields, onSubmit, heading }) => {
     }));
   };
 
+  const handleCheckboxChange = () => {
+    setFormCheck((prevValue) => !prevValue);
+  };
+
   const handleSubmit = async () => {
     try {
-      await onSubmit(formData);
+      if (!formCheck || disableButton) {
+        toast.error(`Fill all Fields and Confirm `, {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        await onSubmit(formData);
+      }
     } catch (error) {
-      console.error("Form submission error:", error?.response?.data?.message);
+      toast.error(`${error?.response?.data?.message}`, {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
+  };
+
+  const isButtonDisabled = () => {
+    // Check if all fields are filled and the checkbox is checked
+    const areAllFieldsFilled = Object.values(formData).every(
+      (value) => value !== ""
+    );
+
+    return !formCheck || !areAllFieldsFilled;
   };
 
   return (
@@ -25,11 +67,13 @@ const FormComponent = ({ fields, onSubmit, heading }) => {
         {heading}
       </p>
       <div className="grid grid-cols-2 gap-4">
-        {fields.map((field, index) => (
+        {fields?.map((field, index) => (
           <div
             key={index}
             className={`${field.type === "file" ? "col-span-2" : ""} ${
-              field.type === "textarea" && fields[0].label === "Patient Name"
+              (field.type === "textarea" &&
+                fields[0].label === "Patient Name") ||
+              field.name === "problemDescription"
                 ? "col-span-2"
                 : ""
             }  `}
@@ -41,12 +85,12 @@ const FormComponent = ({ fields, onSubmit, heading }) => {
                     {field.label}
                   </label>
                   <select
-                    value={formData[field.name] || ""}
+                    defaultValue={field.value && field.value}
                     onChange={(e) => handleChange(field.name, e.target.value)}
                     className="outline-none px-2 py-2 h-fit rounded-md font-base flex-1 focus:border-blue-400 border-slate-200 cursor-pointer border"
                   >
                     {field.options.map((option, optionIndex) => (
-                      <option key={optionIndex} value={option}>
+                      <option key={optionIndex} value={option || field.value}>
                         {option}
                       </option>
                     ))}
@@ -66,7 +110,7 @@ const FormComponent = ({ fields, onSubmit, heading }) => {
                     placeholder={field.placeholder}
                     cols="30"
                     rows="2"
-                    value={formData[field.name] || ""}
+                    value={formData[field.name] || field.value}
                     onChange={(e) => handleChange(field.name, e.target.value)}
                   ></textarea>
                 </div>
@@ -75,7 +119,7 @@ const FormComponent = ({ fields, onSubmit, heading }) => {
                   label={field.label}
                   placeholder={field.placeholder}
                   inputType={field.type}
-                  value={formData[field.name] || ""}
+                  value={formData[field.name] || field.value}
                   setValue={(value) => handleChange(field.name, value)}
                 />
               )
@@ -100,13 +144,29 @@ const FormComponent = ({ fields, onSubmit, heading }) => {
             )}
           </div>
         ))}
-
+        <div>
+          <input
+            type="checkbox"
+            className="cursor-pointer"
+            checked={formCheck}
+            onChange={handleCheckboxChange}
+          />
+          <label className=" ml-4 text-xl font-semibold text-slate-800">
+            Please Confirm
+          </label>
+        </div>
         <div className="col-span-2 mt-3">
           <button
             onClick={handleSubmit}
-            className="text-lg w-full hover:bg-pink-500/90 rounded-md unselectable white border-b px-2 py-2 bg-pink-500 text-white font-semibold"
+            className={`text-lg w-full ${
+              buttonText
+                ? " bg-green-500  hover:bg-green-500/90"
+                : "hover:bg-pink-500/90  bg-pink-500"
+            } ${
+              disableButton && "cursor-not-allowed opacity-50"
+            }  rounded-md unselectable white border-b px-2 py-2 text-white font-semibold  `}
           >
-            Submit
+            {buttonText ? buttonText : "Submit"}
           </button>
         </div>
       </div>

@@ -29,22 +29,31 @@ function App() {
         <Route path="/admin" element={<Layout />}>
           <Route index={true} element={<DashBoard />} />
           <Route path="add-doctor" element={<AddDoctor />} />
-          <Route path="all-doctors" element={<AllDoctors />} />
-          <Route path="doctor-details" element={<DoctorsDetail />} />
+          <Route path="doctors-list" element={<AllDoctors />} />
+          <Route path="doctor-details/:doctorId?" element={<DoctorsDetail />} />
           <Route path="edit-doctor/:doctorId?" element={<EditDoctor />} />
           <Route path="add-patient" element={<AddPatients />} />
-          <Route path="all-patients" element={<AllPatients />} />
-          <Route path="patient-details" element={<PatientDetails />} />
-          <Route path="edit-patient" element={<EditPatient />} />
+          <Route path="patients-list" element={<AllPatients />} />
+          <Route
+            path="patient-details/:patientId?"
+            element={<PatientDetails />}
+          />
+          <Route path="edit-patient/:patientId?" element={<EditPatient />} />
           <Route path="add-appointment" element={<AddAppointment />} />
-          <Route path="all-appointments" element={<AllAppointments />} />
-          <Route path="appointment-details" element={<AppointmentDetails />} />
-          <Route path="edit-appointment" element={<EditAppointment />} />
+          <Route path="appointments-list" element={<AllAppointments />} />
+          <Route
+            path="appointment-details/:appointmentId?"
+            element={<AppointmentDetails />}
+          />
+          <Route
+            path="edit-appointment/:appointmentId?"
+            element={<EditAppointment />}
+          />
           <Route path="add-payment" element={<AddPayment />} />
-          <Route path="all-payments" element={<AllPayments />} />
+          <Route path="payments-list" element={<AllPayments />} />
           <Route path="payment-invoice" element={<PaymentInvoice />} />
           <Route path="add-room-allotment" element={<AddRoomAllotment />} />
-          <Route path="all-room-allotments" element={<AllRooms />} />
+          <Route path="rooms-allotment-list" element={<AllRooms />} />
           <Route path="edit-room-allotment" element={<EditRoomAllotment />} />
         </Route>
       </Routes>

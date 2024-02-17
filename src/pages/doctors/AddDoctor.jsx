@@ -3,7 +3,7 @@ import React from "react";
 import { useMutation } from "react-query";
 import FormComponent from "../../miscellaneous/FormComponent";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 const AddDoctor = () => {
   const doctorFields = [
     {
@@ -61,17 +61,40 @@ const AddDoctor = () => {
   ];
 
   const addDoctorMutation = useMutation(async (doctorData) => {
-    const formData = new FormData();
-    for (const key in doctorData) {
-      formData.append(key, doctorData[key]);
-    }
+    try {
+      const formData = new FormData();
+      for (const key in doctorData) {
+        formData.append(key, doctorData[key]);
+      }
 
-    const { data } = await axios.post(
-      "http://localhost:5000/api/v1/doctor/add-doctor",
-      formData
-    );
-    console.log(data);
-    return data;
+      const { data } = await axios.post(
+        "http://localhost:5000/api/v1/doctor/add-doctor",
+        formData
+      );
+      if (data) {
+        toast.success(`${data?.message}`, {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      toast.error(`${error?.response?.data?.message}`, {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
   });
 
   const handleSubmit = (doctorData) => {

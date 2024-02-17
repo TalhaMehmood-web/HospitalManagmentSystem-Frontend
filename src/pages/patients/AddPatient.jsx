@@ -1,5 +1,8 @@
 import React from "react";
 import FormComponent from "../../miscellaneous/FormComponent";
+import { useMutation } from "react-query";
+import { toast } from "react-toastify";
+import axios from "axios";
 const AddPatients = () => {
   const patientFields = [
     {
@@ -38,7 +41,46 @@ const AddPatients = () => {
     },
     { label: "Picture", placeholder: "Picture", type: "file", name: "picture" },
   ];
-  const handleSubmit = () => {};
+  const addPatientMutation = useMutation(async (patientData) => {
+    try {
+      const formData = new FormData();
+      for (const key in patientData) {
+        formData.append(key, patientData[key]);
+      }
+
+      const { data } = await axios.post(
+        "http://localhost:5000/api/v1/patient/add-patient",
+        formData
+      );
+      if (data) {
+        toast.success(`${data?.message}`, {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      toast.error(`${error?.response?.data?.message}`, {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  });
+
+  const handleSubmit = (patientData) => {
+    addPatientMutation.mutate(patientData);
+  };
   return (
     <div>
       <FormComponent
