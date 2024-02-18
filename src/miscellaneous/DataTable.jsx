@@ -77,7 +77,7 @@ const DataTable = ({
         </div>
       </div>
       <div className="overflow-x-scroll no-scroll">
-        <table className="min-w-full bg-white border border-slate-100 rounded-md text-slate-800">
+        <table className="w-full bg-white border border-slate-100 rounded-md text-slate-800">
           <thead>
             <tr>
               {columns?.map((column, index) => (

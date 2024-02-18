@@ -67,7 +67,7 @@ const DoctorsDetail = () => {
             </div>
 
             <div className="h-fit grid grid-cols-1 bg-transparent ">
-              <div className="grid grid-cols-3 gap-4 shadow-sm  p-3 rounded-md  ">
+              <div className="grid grid-cols-1 820px:grid-cols-3 gap-4 shadow-sm  p-3 rounded-md  ">
                 <div className="border unselectable p-2 border-slate-500/20 bg-slate-200/10 rounded-md flex flex-col justify-center items-center">
                   <img
                     className="
@@ -85,7 +85,7 @@ const DoctorsDetail = () => {
                       : `${data?.data?.doctor?.detail}`}
                   </p>
                 </div>
-                <div className=" col-span-2 border border-slate-500/20 rounded-md ">
+                <div className=" 820px:col-span-2 border border-slate-500/20 rounded-md ">
                   <DetailComponent
                     doctorData={data?.data?.doctor && data?.data?.doctor}
                     bioFields={bioFields}

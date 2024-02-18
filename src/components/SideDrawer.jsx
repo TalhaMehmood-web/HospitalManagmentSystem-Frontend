@@ -71,21 +71,21 @@ const SideDrawer = () => {
   const isActive = (route) => location.pathname.startsWith(`/admin${route}`);
   return (
     <div
-      className={`w-full ${
+      className={`w-full h-full ${
         clicked && "h-[900px] overflow-y-scroll no-scroll"
       } h-[900px] overflow-y-scroll no-scroll bg-gradient-to-r from-[#b24591] via-[#CA5B95] to-[#E17097]`}
     >
       <img
-        className="px-3 py-2 hidden mlg:block"
+        className="px-3 py-2 xlg:block hidden "
         src="https://www.konnectplugins.com/proclinic/Vertical/images/logo.png"
         alt=""
       />
       <div
         onClick={() => navigate("/admin")}
-        className="mlg:mt-0 mt-10 text-white px-3 flex items-center"
+        className=" mt-10 text-white mb-10 990px:mb-0 px-3 flex items-center justify-center 990px:justify-start"
       >
         <i className="fa-solid fa-house"></i>
-        <p className="text-lg hidden mlg:block font-semibold text-white px-3 py-2 cursor-pointer">
+        <p className="text-lg hidden 990px:block  font-semibold text-white px-3 py-2 cursor-pointer">
           Dashboard
         </p>
       </div>

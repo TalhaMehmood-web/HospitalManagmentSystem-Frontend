@@ -7,7 +7,12 @@ export default {
   theme: {
     extend: {},
     screens: {
-      "mlg": "1066px"
+      "xlg": "1200px",
+      "1166px": "1166px",
+      "slg": "1000px",
+      "990px": "990px",
+      "820px": "820px",
+      "690px": "690px"
     }
   },
   plugins: [],

@@ -12,6 +12,7 @@ export const SideDrawerProvider = ({ children }) => {
   const toggleMenu = () => {
     setIsMenuClicked(!isMenuClicked);
   };
+
   return (
     <SideDrawerContext.Provider value={{ toggleMenu, isMenuClicked }}>
       {children}

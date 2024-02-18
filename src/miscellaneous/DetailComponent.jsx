@@ -11,7 +11,7 @@ const DetailComponent = ({ doctorData, bioFields }) => {
     >
       {bioFields?.map((item, index) => (
         <div
-          className={`grid grid-cols-3  justify-center items-center  border border-slate-200 ${
+          className={`grid grid-cols-3 py-2 820px:py-0  justify-center items-center  border border-slate-200 ${
             index % 2 === 0 ? "bg-white" : ""
           } `}
           key={index}

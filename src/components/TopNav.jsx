@@ -3,11 +3,11 @@ import NavIcons from "./NavIcons";
 import { useSideDrawer } from "../context/SideBarContext";
 const TopNav = () => {
   const { toggleMenu, isMenuClicked } = useSideDrawer();
-  console.log(isMenuClicked);
+
   return (
     <div className="flex justify-between items-center bg-white px-2 py-1">
       <img
-        className=" block mlg:hidden "
+        className=" block xlg:hidden "
         src="https://www.konnectplugins.com/proclinic/Vertical/images/logo-dark.png"
         alt=""
       />

@@ -66,11 +66,13 @@ const FormComponent = ({ fields, onSubmit, heading, buttonText }) => {
       <p className="text-3xl unselectable pb-3 mb-4 text-pink-500  border-b-slate-200 border-b   font-semibold">
         {heading}
       </p>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="690px:grid  grid-cols-2 gap-4">
         {fields?.map((field, index) => (
           <div
             key={index}
-            className={`${field.type === "file" ? "col-span-2" : ""} ${
+            className={`mb-2 690px:mb-0 ${
+              field.type === "file" ? "690px:col-span-2" : ""
+            } ${
               (field.type === "textarea" &&
                 fields[0].label === "Patient Name") ||
               field.name === "problemDescription"
